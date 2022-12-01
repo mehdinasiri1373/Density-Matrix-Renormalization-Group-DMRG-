@@ -134,7 +134,7 @@ All of the conclusions we got and discussed for $Z_2$ symmetry hold true for gre
 
 ## Application user interface
 
-[**Through this link, you can access and download the application we wrote for this project.**](https://drive.google.com/file/d/1LaWCg4rv01eqy5gcObYKgny-KsIxdUrb/view?usp=share_link)
+[**Through this link, you can access and download the application we developed for this project.**](https://drive.google.com/file/d/1LaWCg4rv01eqy5gcObYKgny-KsIxdUrb/view?usp=share_link)
 
 ![img 8](https://user-images.githubusercontent.com/51785162/204976102-59ac4bd8-1f34-4a04-bd2c-44a54d8c7643.png)
 
