@@ -76,4 +76,70 @@ As you can see, the system will be four-fold degenerate in $Z_2$.  So we expect 
 How can we verify this now? We employ the numerical DMRG approach since doing it analytically is very challenging.
 
 ## DMRG Method:
+The major issue in quantum many-body physics is that the Hilbert space expands exponentially with size. It is obvious that these matrix sizes will quickly become unmanageable by current computers. The DMRG is a variational, iterative strategy for reducing effective degrees of freedom to those that are most significant for a goal state. The ground state is often the goal state. This model is ideal for us since our model is one-dimensional, we lack long-range interaction, and our system has a gap. This is a highly strong and sophisticated approach, and we spent most of the project time writing the code and tactics for this section.
+
+In this strategy, our system is made up of two subsystems (A and B) and two sites in between. The superblock consists of the left block Plus two sites Plus the right block. The Hilbert space of the superblock will be obtained by the tensor product of the Hilbert spaces of the two subsystems $H_{A+B} = H_A ⊗ H_B$ and will have the dimension $D_{A+B} = D_A × D_B$.
+
+![img 4](https://user-images.githubusercontent.com/51785162/204970920-2d99e2cb-b890-4bba-85d4-8a50cbe20d9d.png)
+
+At each stage, we add one site to the right of the left block and one to the left of the right block. The Hilbert spaces will eventually become too vast to handle. So we set m as the maximum number of states we wish to maintain. The base dimension will grow greater than m at some point throughout the operation. We start applying the density matrix truncation as follows:
+1. Using a suitable library routine (Lanczos, Davidson), diagonalize the super-Hamiltonian to obtain the ground state $|\Psi>=\sum_{\mathrm{ij}} \Psi_{\mathrm{ij}}| \mathbf{i}>\mid \mathbf{j}>$.
+
+2. Calculate the reduced density matrix of the left block and right blocks. 
+
+$$\begin{aligned}
+&\rho_A=\operatorname{Tr}_B|\Psi><\boldsymbol{\Psi}| \\
+&\rho_B=\operatorname{Tr}_A|\Psi><\boldsymbol{\Psi}|
+\end{aligned}$$
+
+3. For each of the blocks, diagonalize the density matrix to obtain the full spectrum and eigenvectors.
+
+4. Build a Truncation matrix or basis by keeping only the m eigenvectors with the largest eigenvalues.
+
+5. Rotate the Hamiltonian and the operators involved in the interactions between blocks to the new basis.
+
+6. Add a new site to the left and right blocks, to build new blocks and reiterate the diagonalization and truncation steps.
+
+## Results:
+### Many-zone chain:
+As previously stated, when N regions are present, we expect a $2^N$ detergency for ground in a system with $Z_2$ symmetry. We examined this problem using the DMRG computational approach for the number of regions N = 1, 2, 3 and discovered that it is as predicted. This conclusion indicates that we will have N qubits for N areas, each with zero-mode pairings at both ends of the FM regions.
+
+![img 5](https://user-images.githubusercontent.com/51785162/204972007-45a7147a-7acf-412f-9483-ac981e5f135f.png)
+
+### Finite length effects:
+The conclusions shown above are for scenarios with large lengths or thermodynamic limitations. We might be curious about what happens at the order of finite length. Is the ground state's degeneracy impacted by length? If so, can an effective length for the system be determined? to provide answers to these questions. Examining the DMRG findings for various systems reveals that two effective lengths, one for the FM area and the other for the PM region, can be defined as follows, depending on the values of J and h:
+
+$$
+\xi_{P M} \sim \frac{1}{\left|J_{P M}-h_{P M}\right|} \quad \xi_{F M} \sim \frac{1}{\left|J_{F M}-h_{F M}\right|}
+$$
+
+$𝜉_{FM}$ means that as long as the distance between the two zero modes at the end of each FM region $(L_{FM})$ is significantly greater than $𝜉_{FM}$, the two zero modes cannot be combined.
+
+But $𝜉_{PM}$ means that as long as the distance between the zero-mode at the end of the first FM region and the zero modes at the beginning of the second FM region $(L_{PM})$ is significantly bigger than $𝜉_{PM}$, these two zero modes cannot be combined and eliminated.
+
+To test this assertion, we will use the DMRG technique on a chain with N = 2 and $Z_2$ symmetry to determine the effective length of the FM and PM regions. Assume $L_{FM} = L_{PM} = 10$ for the sake of simplicity. First, assuming that the variables in the PM area are constant, examine the impact of modifying the FM region (and hence $𝜉_{FM}$) parameters on degeneracy. Second, assuming that the variables in the FM area remain fixed, the impact of altering the parameters of the PM region (and hence $𝜉_{PM}$) on the degeneracy will be seen.
+
+![img 6](https://user-images.githubusercontent.com/51785162/204973244-8f7cb2c8-f4fa-44fa-90b3-e9acbdade4e8.png)
+
+![img 7](https://user-images.githubusercontent.com/51785162/204973364-d81c34e6-81cb-4abe-93e5-7bd443a9374c.png)
+
+All of the conclusions we got and discussed for $Z_2$ symmetry hold true for greater symmetries. So, in general, we assume the detergency state's (is equal to): $n^N$ for a system with the symmetry of $Z_n$ and N regions (FM+PM) as long as the effective length is substantially less than the system's length.
+
+## Conclusion:
+1. We presented a paradigm in which more than one pair of zero-boundary modes may be generated spontaneously (equivalent to one qubit). Theoretical studies show that if we have N pairs of zero modes, then the ground state degeneracy for the $Z_n$ symmetries must be $n^N$. We used the DMRG computational approach to evaluate this and found that the findings were as predicted.
+
+2. Using computational studies, We discover that the effective length can be defined for the FM and PM areas. If we do not wish to mix zero modes, the effective length must be less than the system length. The effective lengths are determined by the problem variables. As a result, we may regulate the number of zero modes by adjusting these variables.
+
+3. Because zero-mode couples can be utilized to create qubits in quantum computing, we can give the controllable number of qubits we need. Our computational studies have also helped us grasp the zero-mode pairing requirements.
+
+## Application user interface
+
+[**Through this link, you can access and download the application we wrote for this project.**](https://drive.google.com/file/d/1LaWCg4rv01eqy5gcObYKgny-KsIxdUrb/view?usp=share_link)
+
+![img 8](https://user-images.githubusercontent.com/51785162/204976102-59ac4bd8-1f34-4a04-bd2c-44a54d8c7643.png)
+
+## Authors
+- Mohammad Mahdi Nasiri Fatmehsari
+- Supervisor: [Seyyed Mohammad Sadegh Vaezi](https://scholar.google.com/citations?hl=en&user=6Pr-lFEAAAAJ)
+
 
